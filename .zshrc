@@ -21,23 +21,28 @@ zstyle ":completion:*" menu select=1
 zstyle ":completion:*" prompt 'Corrections ($e)'
 zstyle ":completion:*" select-prompt %SScrolling active: current selection at %p%s
 zstyle ":completion:*" substitute 1
-zstyle :compinstall filename '/home/quorque/.zshrc'
+zstyle :compinstall filename '$HOME/.zshrc'
 
 autoload -Uz compinit colors
 compinit -u
 colors
 alsi -l -u 
-source /usr/share/zsh/plugins/zsh-syntax-highlight/zsh-syntax-highlighting.zsh
+source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 # Aliases
-alias grep="grep -n --color=auto"
-alias ls="ls --color=auto"
-alias ll="ls -l --color=auto"
+alias grep='grep -n --color=auto'
+alias ls='ls --color=auto'
+alias lh='ls -d .* --color=auto'
+alias ll='ls -l --color=auto'
+alias l='ls -al --color=auto'
+alias rm='rm -i'
+alias mv='mv -i'
+alias cp='cp -i'
 eval $(dircolors -b)
 alias vi=vim
-alias sudo="sudo "
-alias arduino="gksudo arduino"
-alias piklab="gksudo piklab"
+alias sudo='sudo '
+alias arduino='gksudo arduino'
+alias piklab='gksudo piklab'
 alias pytwo=python2.7
 
 # End of lines added by compinstall
@@ -45,7 +50,7 @@ alias pytwo=python2.7
 HISTFILE=~/.histfile
 HISTSIZE=1000
 SAVEHIST=1000
-setopt appendhistory autocd extendedglob notify
+setopt append_history auto_cd extended_glob notify complete_aliases complete_in_word
 unsetopt beep
 bindkey -e
 # End of lines configured by zsh-newuser-install
