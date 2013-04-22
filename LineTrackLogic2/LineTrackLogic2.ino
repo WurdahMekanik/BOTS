@@ -95,6 +95,11 @@ void loop() // run over and over
     case whiteblack:{
       //line following routine to keep left over black
       //we are on the outside edge of line
+      m1Direction = m1Forward;
+      m1Speed = 45;
+      m2Direction = m2Forward;
+      m2Speed = 45;
+      motor_set();
       break;
     }
     
@@ -102,6 +107,11 @@ void loop() // run over and over
     case blackwhite:{
       //line following routine to keep right over black
       //we are on inside of line
+      m1Direction = m1Forward;
+      m1Speed = 45;
+      m2Direction = m2Forward;
+      m2Speed = 45;
+      motor_set();
       break;
     }
     
@@ -115,6 +125,12 @@ void loop() // run over and over
           //this means we were on the right edge of the 
           //line(from the bots perspective) and have hit 
           //a sharp right turn
+          m1Direction = m1Forward;
+          m1Speed = 35;
+          m2Direction = m2Reverse;
+          m2Speed = 45;
+          motor_set();
+          delay(800);
           break;
         }
     
@@ -122,11 +138,18 @@ void loop() // run over and over
           //this means we were on the left edge of the 
           //line(from the bots perspective) and have hit 
           //a sharp left turn
+          m1Direction = m1Reverse;
+          m1Speed = 45;
+          m2Direction = m2Forward;
+          m2Speed = 35;
+          motor_set();
+          delay(800);
           break;
         }
         
         case whitewhite:{
-          // WTF!? This should never happen... HALT & CATCH FIRE.
+          // WTF!? This should never happen, send HCF signal...
+          hcf();
           switch(prePreviousState){
   
               case whiteblack:{
@@ -137,8 +160,8 @@ void loop() // run over and over
               }
     
               case blackwhite:{
-               //we were on the right edge of the line
-               //it was a sharp right
+                //we were on the right edge of the line
+                //it was a sharp right
                 break;
               }
            }
@@ -155,29 +178,41 @@ void loop() // run over and over
   
         case whiteblack:{
           //we were on the left edge of the line, turn right
-        break;
+          m1Direction = m1Forward;
+          m1Speed = 45;
+          m2Direction = m2Reverse;
+          m2Speed = 35;
+          motor_set();
+          break;
         }
     
         case blackwhite:{
-         //we were on the left edge of the line, turn left
-        break;
+          //we were on the left edge of the line, turn left
+          m1Direction = m1Reverse;
+          m1Speed = 35;
+          m2Direction = m2Forward;
+          m2Speed = 45;
+          motor_set();
+          break;
         }
     
         case blackblack:{
-         // uh-oh... we lost the line after encountering a
-         // very sharp turn, where were we before we lost it?
-           switch(prePreviousState){
+          // uh-oh... we lost the line after encountering a
+          // very sharp turn, where were we before we lost it?
+          // Once again, this should NEVER happen... HALT & CATCH FIRE!
+          hcf();
+            switch(prePreviousState){
   
               case whiteblack:{
                 //we were on the left edge of the line
                 //It was a sharp left
-              break;
+                break;
               }
     
               case blackwhite:{
-               //we were on the right edge of the line
-               //it was a sharp right
-              break;
+                //we were on the right edge of the line
+                //it was a sharp right
+                break;
               }
            }
            break;
@@ -226,3 +261,20 @@ char getCurrentState(){
     return blackblack;
   }
 }
+
+void motor_set(){
+  // send motor commands
+  Serial1.write(m1Direction);
+  Serial1.write(m1Speed);
+  Serial1.write(m2Direction);   
+  Serial1.write(m2Speed);
+}
+
+void hcf(){
+  m1Direction = m1Reverse;
+  m1Speed = 127;
+  m2Direction = m2Forward;
+  m2Speed = 127;
+  motor_set();
+}
+
