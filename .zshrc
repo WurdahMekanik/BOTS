@@ -7,7 +7,7 @@ bindkey "^[[A"  history-beginning-search-backward
 bindkey "^[[B"  history-beginning-search-forward
 bindkey "^[[3~" delete-char
 
-# The following lines were added by compinstall
+# Completion stuff
 zstyle ":completion:*" completer _list _oldlist _expand _complete _ignored _match _correct _approximate _prefix
 zstyle ":completion:*" completions 1
 zstyle ":completion:*" format 'Completing %d'
@@ -35,6 +35,7 @@ alias ls='ls --color=auto'
 alias lh='ls -d .* --color=auto'
 alias ll='ls -l --color=auto'
 alias l='ls -al --color=auto'
+alias rr='rm -r'
 alias rm='rm -i'
 alias mv='mv -i'
 alias cp='cp -i'
@@ -45,15 +46,12 @@ alias arduino='gksudo arduino'
 alias piklab='gksudo piklab'
 alias pytwo=python2.7
 
-# End of lines added by compinstall
-# Lines configured by zsh-newuser-install
 HISTFILE=~/.histfile
 HISTSIZE=1000
 SAVEHIST=1000
 setopt append_history auto_cd extended_glob notify complete_aliases complete_in_word
 unsetopt beep
 bindkey -e
-# End of lines configured by zsh-newuser-install
 
 # Custom Prompt settings
 PROMPT="%{$fg[blue]%}%n%{$fg[white]%}@%{$fg[green]%}%m%{$reset_color%} %{$fg[red]%}[%D{%d. %b %Y}%{$fg[cyan] | %{$fg[red]%}%*] %{$fg[cyan]- %{$fg[yellow]%}{%~}""
