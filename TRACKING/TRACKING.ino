@@ -18,12 +18,12 @@ char m2Direction = m2Forward;
 //limits used for determining how sharp to turn
 const int s1Limit1 = 80;
 const int s2Limit1 = -80;
-const int s1Limit2 = 220;
-const int s2Limit2 = -220;
-const int s1Limit3 = 320;
-const int s2Limit3 = -320;
-const int s1Limit4 = 420;
-const int s2Limit4 = -420;
+const int s1Limit2 = 200;
+const int s2Limit2 = -200;
+const int s1Limit3 = 380;
+const int s2Limit3 = -380;
+const int s1Limit4 = 500;
+const int s2Limit4 = -500;
 //Hook & winch
 const int grap = 4;
 const int hookservo = 3;
@@ -38,6 +38,8 @@ void setup(){
   Serial.begin(19200);
   delay(5);
   Uart.write(0x81);
+  pinMode(13, OUTPUT);
+  digitalWrite(13, HIGH);
 }
 void loop(){ 
   if (digitalRead(grap) == 1) {
@@ -67,75 +69,75 @@ void traceur(){
     //stop, look, listen...
     //then rotate in place a bit
     m1Direction = m1Reverse;
-    m1Speed = 45;
+    m1Speed = 50;
     m2Direction = m2Forward;
-    m2Speed = 45;
+    m2Speed = 50;
     motor_set();
-    delay(800);
+    delay(1000);
   }
   else if(sensorDiff < s2Limit4){
     //stop, look, listen...
     //then rotate in place a bit
     m1Direction = m1Forward;
+    m1Speed = 50;
+    m2Direction = m2Reverse;
+    m2Speed = 50;
+    motor_set();
+    delay(1000);
+  }
+  else if(sensorDiff > s1Limit3){
+    m1Direction = m1Reverse;
+    m1Speed = 45;
+    m2Direction = m2Forward;
+    m2Speed = 45;
+    motor_set();
+    delay(500);
+  }
+  else if(sensorDiff < s2Limit3){
+    m1Direction = m1Forward;
     m1Speed = 45;
     m2Direction = m2Reverse;
     m2Speed = 45;
     motor_set();
-    delay(800);
-  }
-  else if(sensorDiff > s1Limit3){
-    m1Direction = m1Reverse;
-    m1Speed = 40;
-    m2Direction = m2Forward;
-    m2Speed = 40;
-    motor_set();
-    delay(700);
-  }
-  else if(sensorDiff < s2Limit3){
-    m1Direction = m1Forward;
-    m1Speed = 40;
-    m2Direction = m2Reverse;
-    m2Speed = 40;
-    motor_set();
-    delay(700);
+    delay(500);
   }
   else if(sensorDiff > s1Limit2){
     m1Direction = m1Reverse;
-    m1Speed = 35;
+    m1Speed = 40;
     m2Direction = m2Forward;
-    m2Speed = 35;
+    m2Speed = 40;
     motor_set();
-    delay(600);
+    delay(200);
   }
   else if(sensorDiff < s2Limit2){
     m1Direction = m1Forward;
+    m1Speed = 40;
+    m2Direction = m2Reverse;
+    m2Speed = 40;
+    motor_set();
+    delay(200);
+  }
+  else if(sensorDiff > s1Limit1){
+    m1Direction = m1Reverse;
+    m1Speed = 35;
+    m2Direction = m2Forward;
+    m2Speed = 35;
+    motor_set();
+    delay(50);
+  }
+  else if(sensorDiff < s2Limit1){
+    m1Direction = m1Forward;
     m1Speed = 35;
     m2Direction = m2Reverse;
     m2Speed = 35;
     motor_set();
-    delay(600);
-  }
-  else if(sensorDiff > s1Limit1){
-    m1Direction = m1Reverse;
-    m1Speed = 30;
-    m2Direction = m2Forward;
-    m2Speed = 30;
-    motor_set();
-    delay(500);
-  }
-  else if(sensorDiff < s2Limit1){
-    m1Direction = m1Forward;
-    m1Speed = 30;
-    m2Direction = m2Reverse;
-    m2Speed = 30;
-    motor_set();
-    delay(500);
+    delay(50);
   }
   else{
     m1Direction = m1Forward;
     m2Direction = m2Forward;
-    m1Speed = 45;
-    m2Speed = 45;
+    m1Speed = 50;
+    m2Speed = 50;
     motor_set();
   } 
 }
@@ -159,6 +161,7 @@ void grappy(){
   Uart.write(m2Forward);
   Uart.write(45);
 }
+
 void motor_set(){
   // send motor commands
   Uart.write(m1Direction);
