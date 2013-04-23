@@ -1,5 +1,5 @@
 # Keybinds
-bindkey '^[[7~' vi-beginning-of-line
+bindkey "^[[7~" vi-beginning-of-line
 bindkey "^[[8~" vi-end-of-line
 bindkey "^[Od"  vi-backward-word
 bindkey "^[Oc"  vi-forward-word
@@ -24,10 +24,9 @@ zstyle ":completion:*" substitute 1
 zstyle :compinstall filename '$HOME/.zshrc'
 
 autoload -Uz compinit colors
-compinit -u
+compinit -u -d $HOME/.zcompdump
 colors
 alsi -l -u 
-source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 # Aliases
 alias grep='grep -n --color=auto'
