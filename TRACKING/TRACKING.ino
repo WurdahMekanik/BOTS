@@ -16,14 +16,14 @@ int m2Speed = 65;
 char m1Direction = m1Forward;
 char m2Direction = m2Forward;
 //limits used for determining how sharp to turn
-const int s1Limit1 = 80;
-const int s2Limit1 = -80;
-const int s1Limit2 = 200;
-const int s2Limit2 = -200;
-const int s1Limit3 = 380;
-const int s2Limit3 = -380;
-const int s1Limit4 = 500;
-const int s2Limit4 = -500;
+const int s1Limit1 = 150;
+const int s2Limit1 = -150;
+const int s1Limit2 = 350;
+const int s2Limit2 = -350;
+const int s1Limit3 = 550;
+const int s2Limit3 = -550;
+const int s1Limit4 = 750;
+const int s2Limit4 = -750;
 //Hook & winch
 const int grap = 4;
 const int hookservo = 3;
@@ -60,6 +60,7 @@ void loop(){
   Serial.print("    Difference: ");
   Serial.println(sensorDiff);
 }
+
 void traceur(){
   sensorLeft = analogRead(analogLeft);
   sensorRight = analogRead(analogRight);
@@ -68,6 +69,7 @@ void traceur(){
   if(sensorDiff > s1Limit4){
     //stop, look, listen...
     //then rotate in place a bit
+    delay(50);
     m1Direction = m1Reverse;
     m1Speed = 50;
     m2Direction = m2Forward;
@@ -78,6 +80,7 @@ void traceur(){
   else if(sensorDiff < s2Limit4){
     //stop, look, listen...
     //then rotate in place a bit
+    delay(50);
     m1Direction = m1Forward;
     m1Speed = 50;
     m2Direction = m2Reverse;
@@ -86,22 +89,25 @@ void traceur(){
     delay(1000);
   }
   else if(sensorDiff > s1Limit3){
+    delay(50);
     m1Direction = m1Reverse;
     m1Speed = 45;
     m2Direction = m2Forward;
     m2Speed = 45;
     motor_set();
-    delay(500);
+    delay(400);
   }
   else if(sensorDiff < s2Limit3){
+    delay(50);
     m1Direction = m1Forward;
     m1Speed = 45;
     m2Direction = m2Reverse;
     m2Speed = 45;
     motor_set();
-    delay(500);
+    delay(400);
   }
   else if(sensorDiff > s1Limit2){
+    delay(50);
     m1Direction = m1Reverse;
     m1Speed = 40;
     m2Direction = m2Forward;
@@ -110,6 +116,7 @@ void traceur(){
     delay(200);
   }
   else if(sensorDiff < s2Limit2){
+    delay(50);
     m1Direction = m1Forward;
     m1Speed = 40;
     m2Direction = m2Reverse;
@@ -119,19 +126,17 @@ void traceur(){
   }
   else if(sensorDiff > s1Limit1){
     m1Direction = m1Reverse;
-    m1Speed = 35;
+    m1Speed = 40;
     m2Direction = m2Forward;
-    m2Speed = 35;
+    m2Speed = 40;
     motor_set();
-    delay(50);
   }
   else if(sensorDiff < s2Limit1){
     m1Direction = m1Forward;
-    m1Speed = 35;
+    m1Speed = 40;
     m2Direction = m2Reverse;
-    m2Speed = 35;
+    m2Speed = 40;
     motor_set();
-    delay(50);
   }
   else{
     m1Direction = m1Forward;
