@@ -20,8 +20,8 @@ const int s1Limit1 = 150;
 const int s2Limit1 = -150;
 const int s1Limit2 = 350;
 const int s2Limit2 = -350;
-const int s1Limit3 = 550;
-const int s2Limit3 = -550;
+const int s1Limit3 = 650;
+const int s2Limit3 = -650;
 const int s1Limit4 = 750;
 const int s2Limit4 = -750;
 //Hook & winch
@@ -31,7 +31,7 @@ const char winch = 0xF1;
 int grapmask = 0;
 
 void setup(){
-  analogReadAveraging(20);
+  analogReadAveraging(5);
   pinMode(grap, INPUT);
   pinMode(hookservo, OUTPUT);
   Uart.begin(19200);
@@ -111,31 +111,31 @@ void traceur(){
     m1Direction = m1Reverse;
     m1Speed = 40;
     m2Direction = m2Forward;
-    m2Speed = 40;
+    m2Speed = 45;
     motor_set();
     delay(200);
   }
   else if(sensorDiff < s2Limit2){
     delay(50);
     m1Direction = m1Forward;
-    m1Speed = 40;
+    m1Speed = 45;
     m2Direction = m2Reverse;
     m2Speed = 40;
     motor_set();
     delay(200);
   }
   else if(sensorDiff > s1Limit1){
-    m1Direction = m1Reverse;
-    m1Speed = 40;
+    m1Direction = m1Forward;
+    m1Speed = 35;
     m2Direction = m2Forward;
-    m2Speed = 40;
+    m2Speed = 50;
     motor_set();
   }
   else if(sensorDiff < s2Limit1){
     m1Direction = m1Forward;
-    m1Speed = 40;
-    m2Direction = m2Reverse;
-    m2Speed = 40;
+    m1Speed = 50;
+    m2Direction = m2Forward;
+    m2Speed = 35;
     motor_set();
   }
   else{
