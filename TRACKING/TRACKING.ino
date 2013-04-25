@@ -1,3 +1,4 @@
+
 HardwareSerial Uart = HardwareSerial();
 //pins for reading IR sensors
 const int analogLeft = A0;
@@ -29,6 +30,7 @@ const int grap = 4;
 const int hookservo = 3;
 const char winch = 0xF1;
 int grapmask = 0;
+int shot = 0;
 
 void setup(){
   analogReadAveraging(5);
@@ -46,10 +48,10 @@ void loop(){
     Serial.println("MASK!");
     grapmask=1;
   }
-  while(grapmask==0){
+  if(grapmask==0){
     traceur();
   }
-  while(grapmask==1){
+  if(grapmask==1){
     grappy();
   }
   //TESTING
@@ -148,23 +150,27 @@ void traceur(){
 }
 
 void grappy(){
-  Uart.write(m1Reverse);
-  Uart.write(50);
-  Uart.write(m2Reverse);   
-  Uart.write(50);
+  while(shot != 1){
+    Uart.write(m1Reverse);
+    Uart.write(40);
+    Uart.write(m2Reverse);   
+    Uart.write(40);
     Serial.println("HERE IT COMES!");
-  // wait for it...
-  delay(800);
-  analogWrite(hookservo, 200);
+    // wait for it...
+    delay(800);
+    analogWrite(hookservo, 255);
+    delay(1000);
+    shot = 1;
+  }
+  analogWrite(hookservo, 0);
   Uart.write(winch);
   Uart.write(127);
   // There will be Slack! (change the delay to let winch acquire Slack)
-  delay(500);
-  analogWrite(hookservo, 0);
+  delay(7000);
   Uart.write(m1Forward);
-  Uart.write(45);
+  Uart.write(50);
   Uart.write(m2Forward);
-  Uart.write(45);
+  Uart.write(50);
 }
 
 void motor_set(){
