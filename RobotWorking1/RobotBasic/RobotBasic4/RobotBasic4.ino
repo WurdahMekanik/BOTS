@@ -1,11 +1,11 @@
 // constants for motor1 commands
-const unsigned char m1Forward =  0xC6;
-const unsigned char m1Reverse =  0xC5;
-const unsigned char m1Brake   =  0xC7;
+const unsigned char mLeftForward =  0xC6;
+const unsigned char mLeftReverse =  0xC5;
+const unsigned char mLeftBrake   =  0xC7;
 // constants for motor2 commands
-const unsigned char m2Forward =  0xCE;
-const unsigned char m2Reverse =  0xCD;
-const unsigned char m2Brake   =  0xCF;
+const unsigned char mRightForward =  0xCE;
+const unsigned char mRightReverse =  0xCD;
+const unsigned char mRightBrake   =  0xCF;
 // pins for reading IR sensors
 const int analogLeft   =  A3;
 const int analogRight  =  A4;
@@ -16,12 +16,11 @@ const int tilt      =  5;
 const int grap      =  4;
 const int hookservo =  3;
 const char winch    =  0xF1;
-// store sensor values
+// sensor values
 int sensorLeft  =  0;
 int sensorRight =  0;
 int sensorDiff  =  0;
 int speed       =  70;
-int m2Speed     =  127;
 // masks & counts
 int count        =  0;
 boolean started  =  0;
@@ -65,49 +64,49 @@ void loop() {
 
 // both motors set to forward at full 127 speed
 void forward(int speed){
-  Serial1.write(m1Forward);
+  Serial1.write(mLeftForward);
   Serial1.write(speed);
-  Serial1.write(m2Forward);
+  Serial1.write(mRightForward);
   Serial1.write(speed);
-  Serial1.write(m1Forward);
+  Serial1.write(mLeftForward);
   Serial1.write(speed);
-  Serial1.write(m2Forward);
+  Serial1.write(mRightForward);
   Serial1.write(speed);
 }
 
 // both motors set to forward at full 127 speed
 void reverse(int speed){
-  Serial1.write(m1Reverse);
+  Serial1.write(mLeftReverse);
   Serial1.write(speed);
-  Serial1.write(m2Reverse);
+  Serial1.write(mRightReverse);
   Serial1.write(speed);
-  Serial1.write(m1Reverse);
+  Serial1.write(mLeftReverse);
   Serial1.write(speed);
-  Serial1.write(m2Reverse);
+  Serial1.write(mRightReverse);
   Serial1.write(speed);
 }
 
 // both motors set to forward at full 127 speed
 void brakeLow(int speed){
-  Serial1.write(m1Brake);
+  Serial1.write(mLeftBrake);
   Serial1.write(speed);
-  Serial1.write(m2Brake);
-  Serial1.write(speed);
-}
-
-// both motors set to forward at full 127 speed
-void brakeM1(int speed){
-  Serial1.write(m1Brake);
-  Serial1.write(speed);
-  Serial1.write(m1Brake);
+  Serial1.write(mRightBrake);
   Serial1.write(speed);
 }
 
 // both motors set to forward at full 127 speed
-void brakeM2(int speed){
-  Serial1.write(m2Brake);
+void brakemLeft(int speed){
+  Serial1.write(mLeftBrake);
   Serial1.write(speed);
-  Serial1.write(m2Brake);
+  Serial1.write(mLeftBrake);
+  Serial1.write(speed);
+}
+
+// both motors set to forward at full 127 speed
+void brakemRight(int speed){
+  Serial1.write(mRightBrake);
+  Serial1.write(speed);
+  Serial1.write(mRightBrake);
   Serial1.write(speed);
 }
 
@@ -115,18 +114,18 @@ void brakeM2(int speed){
 // input -127 to 127 dSpeed, direction/speed
 // negative numbers are reverse speed
 // positive are forward speed
-void setM1(int dSpeed){
+void setmLeft(int dSpeed){
   if(dSpeed >= 0){
-    Serial1.write(m1Forward);
+    Serial1.write(mLeftForward);
     Serial1.write(dSpeed);
-    Serial1.write(m1Forward);
+    Serial1.write(mLeftForward);
     Serial1.write(dSpeed);
   }
   if(dSpeed < 0){
     dSpeed = abs(dSpeed);
-    Serial1.write(m1Reverse);
+    Serial1.write(mLeftReverse);
     Serial1.write(dSpeed);
-    Serial1.write(m1Reverse);
+    Serial1.write(mLeftReverse);
     Serial1.write(dSpeed);
   }
 }
@@ -135,18 +134,18 @@ void setM1(int dSpeed){
 // input -127 to 127 dSpeed, direction/speed
 // negative numbers are reverse speed
 // positive are forward speed
-void setM2(int dSpeed){
+void setmRight(int dSpeed){
   if(dSpeed >= 0){
-    Serial1.write(m2Forward);
+    Serial1.write(mRightForward);
     Serial1.write(dSpeed);
-    Serial1.write(m2Forward);
+    Serial1.write(mRightForward);
     Serial1.write(dSpeed);
   }
   if(dSpeed < 0){
     dSpeed = abs(dSpeed);
-    Serial1.write(m2Reverse);
+    Serial1.write(mRightReverse);
     Serial1.write(dSpeed);
-    Serial1.write(m2Reverse);
+    Serial1.write(mRightReverse);
     Serial1.write(dSpeed);
   }
 }
@@ -155,29 +154,29 @@ void setM2(int dSpeed){
 // input -127 to 127 dSpeed, direction/speed
 // negative numbers are reverse speed
 // positive are forward speed
-void setM1M2(int dSpeedM1, int dSpeedM2){
-  setM1(dSpeedM1);
-  setM2(dSpeedM2);
-  setM1(dSpeedM1);
-  setM2(dSpeedM2);
+void setmLeftmRight(int dSpeedmLeft, int dSpeedmRight){
+  setmLeft(dSpeedmLeft);
+  setmRight(dSpeedmRight);
+  setmLeft(dSpeedmLeft);
+  setmRight(dSpeedmRight);
 }
  
 // motor2 set to reverse and motor1 forward at speed
 // input 0-127
 void rotateRight(int speed){
-  setM1(speed);
-  setM2(0 - speed);
-  setM1(speed);
-  setM2(0 - speed);
+  setmLeft(speed);
+  setmRight(0 - speed);
+  setmLeft(speed);
+  setmRight(0 - speed);
 }
 
 // motor2 set to reverse and motor1 forward at speed
 // input 0-127
 void rotateLeft(int speed){
-  setM2(speed);
-  setM1(0 - speed);
-  setM2(speed);
-  setM1(0 - speed);
+  setmRight(speed);
+  setmLeft(0 - speed);
+  setmRight(speed);
+  setmLeft(0 - speed);
 }
 
 // starts up both hardware serial and
@@ -291,14 +290,32 @@ void lineTracking(){
 }
  
 void straightLine(){
-  
+  sensorDiff = sensorLeft - sensorRight;
+  if (sensorDiff > 100){
+    Serial1.write(mLeftForward);
+    Serial1.write(127);
+    Serial1.write(mRightForward);
+    Serial1.write(110);
+  }
+  if (sensorDiff < 100){
+    Serial1.write(mLeftForward);
+    Serial1.write(110);
+    Serial1.write(mRightForward);
+    Serial1.write(127);
+  }
+  else {
+    Serial1.write(mLeftForward);
+    Serial1.write(127);
+    Serial1.write(mRightForward);
+    Serial1.write(127);
+  }
 }
 
 void grapple(){
   if (!shot){
-    Serial1.write(m1Reverse);
+    Serial1.write(mLeftReverse);
     Serial1.write(40);
-    Serial1.write(m2Reverse);   
+    Serial1.write(mRightReverse);   
     Serial1.write(40);
     Serial.println("HERE IT COMES!");
     // wait for it...
@@ -312,17 +329,8 @@ void grapple(){
   Serial1.write(127);
   // There will be Slack! (change the delay to let winch acquire Slack)
   delay(7000);
-  Serial1.write(m1Forward);
+  Serial1.write(mLeftForward);
   Serial1.write(50);
-  Serial1.write(m2Forward);
+  Serial1.write(mRightForward);
   Serial1.write(50);
-}
-
-void testing(){
-  Serial.print("m1 = " );                       
-  Serial.print(m1Speed);      
-  Serial.print("   m2 = " );                       
-  Serial.print(m2Speed);      
-  Serial.print("    Difference: ");
-  Serial.println(sensorDiff);
 }
