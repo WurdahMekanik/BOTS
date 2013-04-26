@@ -47,20 +47,18 @@ void loop() {
   if (digitalRead(grap) == 1) {
     grapMask = 1;
   }
-  if (grapMask){
-    if (tiltMask){
-      analogLeft  = A3;
-      analogRight = A4;
-      lineTracking();
-    }
-    if (!tiltMask){
-      analogLeft  = A5;
-      analogRight = A6;
-      straightLine();
-    }
+  if (tiltMask){
+    analogLeft  = A3;
+    analogRight = A4;
+    lineTracking();
   }
-  if (!grapMask){
-    grapple();
+  if (!tiltMask){
+    analogLeft  = A5;
+    analogRight = A6;
+    straightLine();
+    if (grapMask){
+      grapple();
+    }
   }
 }
 
@@ -293,15 +291,15 @@ void lineTracking(){
  
 void straightLine(){
   sensorDiff = sensorLeft - sensorRight;
-  if (sensorDiff > 100){
+  if (sensorDiff > 120){
     Serial1.write(mLeftForward);
     Serial1.write(127);
     Serial1.write(mRightForward);
-    Serial1.write(110);
+    Serial1.write(100);
   }
-  if (sensorDiff < 100){
+  if (sensorDiff < -120){
     Serial1.write(mLeftForward);
-    Serial1.write(110);
+    Serial1.write(100);
     Serial1.write(mRightForward);
     Serial1.write(127);
   }
@@ -319,9 +317,9 @@ void grapple(){
     Serial1.write(40);
     Serial1.write(mRightReverse);   
     Serial1.write(40);
-    delay(800);
+    delay(900);
     analogWrite(hookservo, 255);
-    delay(1000);
+    delay(500);
     shot = 1;
   }
   analogWrite(hookservo, 0);
@@ -330,7 +328,7 @@ void grapple(){
   // There will be Slack! (change the delay to let winch acquire Slack)
   delay(7000);
   Serial1.write(mLeftForward);
-  Serial1.write(50);
+  Serial1.write(40);
   Serial1.write(mRightForward);
-  Serial1.write(50);
+  Serial1.write(40);
 }
