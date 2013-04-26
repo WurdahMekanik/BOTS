@@ -29,6 +29,9 @@ compinit -u -d $HOME/.zcompdump
 colors
 alsi -l -u 
 
+# Sourcing
+source $ZDOTDIR/git-prompt/zshrc.sh
+
 # Aliases
 alias grep='grep -n --color=auto'
 alias ls='ls --color=auto'
@@ -37,21 +40,27 @@ alias ll='ls -l --color=auto'
 alias l='ls -al --color=auto'
 alias rr='rm -r'
 alias rm='rm -i'
+alias rf='rm -f'
+alias rrf='rm -rf'
 alias mv='mv -i'
 alias cp='cp -i'
-eval $(dircolors -b)
 alias vi=vim
 alias sudo='sudo '
 alias arduino='gksudo arduino'
 alias piklab='gksudo piklab'
 alias pytwo=python2.7
+eval $(dircolors -b)
 
+# History
 HISTFILE=~/.histfile
 HISTSIZE=1000
 SAVEHIST=1000
+
+# Setopts
 setopt append_history auto_cd extended_glob notify complete_aliases complete_in_word
 unsetopt beep
 
 # Custom Prompt settings
 PROMPT="%{$fg[blue]%}%n%{$fg[white]%}@%{$fg[green]%}%m%{$reset_color%} %{$fg[red]%}[%D{%d. %b %Y}%{$fg[cyan] | %{$fg[red]%}%*] %{$fg[cyan]- %{$fg[yellow]%}{%~}""
 %{$fg[cyan]%}:%#>"%{$reset_color%} 
+RPROMPT="%B%b $git_super_status"
