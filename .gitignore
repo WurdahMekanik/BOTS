@@ -1,0 +1,4 @@
+# Swap & lock files
+*.sw*
+*.lock
+*.lck
