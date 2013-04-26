@@ -1,0 +1,224 @@
+# Should you change your keyboard layout somewhen, delete
+# this file and re-run i3-config-wizard(1).
+#
+# i3 config file (v4)
+#
+# Please see http://i3wm.org/docs/userguide.html for a complete reference!
+
+set $mod Mod4
+
+# Font for window titles. Will also be used by the bar unless a different font
+# is used in the bar {} block below. ISO 10646 = Unicode
+#font -misc-fixed-medium-r-normal--13-120-75-75-C-70-iso10646-1
+# The (commented) font above is very space-efficient, that is, it looks good, sharp and
+# clear in small sizes. However, if you need a lot of unicode glyphs or
+# right-to-left text rendering, you should instead use pango for rendering and
+# chose an xft font, such as:
+# font xft:DejaVu Sans Mono 10
+font xft:Linux Biolinum bold 8
+
+#assign application to workspace
+#assign [class="luakit"] → 2:web
+assign [class="Claws-mail"] → 2:web
+assign [class="Firefox"] → 2:web
+assign [class="Opera"] → 2:web
+assign [class="Chromium"] → 2:web
+assign [class="Google-chrome"] → 2:web
+assign [class="^URxvt$"] → 3:terms
+assign [class="Xterm"] → 3:terms
+assign [class="vlc"] → 4:media
+assign [class="Spotify"] → 4:media
+assign [class="Amarok"] → 4:media
+assign [class="libreoffice"] → 5:office
+assign [class="Eclipse"] → 6:elex
+assign [class="Codelite"] → 6:elex
+assign [class="Arduino"] → 6:elex
+assign [class="Emacs"] → 6:elex
+assign [class="Piklab"] → 6:elex
+assign [class="Gpsim"] → 6:elex
+assign [class="Gimp"] → 7:art
+assign [class="Shotwell"] → 7:art
+assign [class="Gpicview"] → 7:art
+
+# special rules for apps
+for_window [class="Opera"] border 1pixel
+
+# startup
+exec xrandr --output CRT1 --auto --mode 1024x768 --right-of LVDS
+exec sleep 1s
+exec volnoti
+exec sleep 1s
+exec xcompmgr -CcFf
+exec sleep 2s
+exec /home/quorque/.scripts/wallchg
+exec dropboxd
+
+# Use Mouse+$mod to drag floating windows to their wanted position
+floating_modifier $mod
+
+# start various programs
+bindsym $mod+Return exec i3-sensible-terminal
+bindsym Mod1+F2 exec dmenu_run
+bindsym $mod+z exec leafpad
+bindsym $mod+Shift+z exec gksudo leafpad
+bindsym $mod+m exec amarok
+bindsym $mod+Shift+m exec spotify
+bindsym $mod+c exec claws-mail
+bindsym $mod+f exec spacefm
+bindsym $mod+Shift+f exec gksudo spacefm
+bindsym $mod+b exec opera
+bindsym $mod+Shift+b exec firefox
+bindsym $mod+o exec libreoffice
+bindsym $mod+equal exec gcalctool
+bindsym $mod+Shift+equal exec qalculate
+mode "dev tools" {
+	bindsym a exec gksudo arduino
+	bindsym c exec codelite
+	bindsym e exec eclipse
+	bindsym p exec gksudo piklab
+	bindsym s exec spyder
+
+	bindsym Return mode "default"
+	bindsym Escape mode "default"
+} bindsym $mod+d mode "dev tools"
+
+# kill focused window
+bindsym $mod+Escape kill
+
+# change focus
+bindsym $mod+h focus left
+bindsym $mod+j focus down
+bindsym $mod+k focus up
+bindsym $mod+l focus right
+# alternatively, you can use the cursor keys:
+bindsym $mod+Left focus left
+bindsym $mod+Down focus down
+bindsym $mod+Up focus up
+bindsym $mod+Right focus right
+
+# move focused window
+bindsym $mod+Shift+h move left
+bindsym $mod+Shift+j move down
+bindsym $mod+Shift+k move up
+bindsym $mod+Shift+l move right
+# alternatively, you can use the cursor keys:
+bindsym $mod+Shift+Left move left
+bindsym $mod+Shift+Down move down
+bindsym $mod+Shift+Up move up
+bindsym $mod+Shift+Right move right
+
+# change container layout (stacked, tabbed, toggle split)
+bindsym $mod+Mod1+s layout stacking
+bindsym $mod+Mod1+w layout tabbed
+bindsym $mod+Mod1+e layout toggle split
+# split in horizontal/vertical orientation
+bindsym $mod+Mod1+h split h
+bindsym $mod+Mod1+v split v
+
+# toggle tiling / floating
+bindsym $mod+Shift+space floating toggle
+# change focus between tiling / floating windows
+bindsym $mod+space focus mode_toggle
+
+# enter fullscreen mode for the focused container
+bindsym $mod+g fullscreen
+
+# focus the parent container
+bindsym $mod+a focus parent
+# focus the child container
+#bindsym $mod+d focus child
+
+# switch to previous or next workspace
+bindsym $mod+Shift+Tab workspace prev
+bindsym $mod+Tab workspace next
+
+# switch to workspace
+bindsym $mod+1 workspace 1:main
+bindsym $mod+2 workspace 2:web
+bindsym $mod+3 workspace 3:terms
+bindsym $mod+4 workspace 4:media
+bindsym $mod+5 workspace 5:office
+bindsym $mod+6 workspace 6:elex
+bindsym $mod+7 workspace 7:art
+bindsym $mod+8 workspace 8
+bindsym $mod+9 workspace 9
+bindsym $mod+0 workspace 10
+
+# move focused container to workspace
+bindsym $mod+Shift+1 move container to workspace 1:main
+bindsym $mod+Shift+2 move container to workspace 2:web
+bindsym $mod+Shift+3 move container to workspace 3:terms
+bindsym $mod+Shift+4 move container to workspace 4:media
+bindsym $mod+Shift+5 move container to workspace 5:office
+bindsym $mod+Shift+6 move container to workspace 6:elex
+bindsym $mod+Shift+7 move container to workspace 7:art
+bindsym $mod+Shift+8 move container to workspace 8
+bindsym $mod+Shift+9 move container to workspace 9
+bindsym $mod+Shift+0 move container to workspace 10
+
+# volume keys
+bindsym XF86AudioRaiseVolume    exec amixer -c 0 sset Master 1%+ \; exec ~/.scripts/volnoti
+bindsym XF86AudioLowerVolume    exec amixer -c 0 sset Master 1%- \; exec ~/.scripts/volnoti
+bindsym XF86AudioMute           exec amixer -c 0 sset Master toggle  \; exec ~/.scripts/volnoti
+
+# reload the configuration file
+bindsym $mod+Shift+c reload
+# restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
+bindsym $mod+Shift+r restart
+# exit i3 (logs you out of your X session)
+bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
+# poweroff
+bindsym $mod+Shift+Escape exec systemctl poweroff
+# reboot
+bindsym $mod+Shift+Delete exec systemctl reboot
+
+# resize window (you can also use the mouse for that)
+mode "resize" {
+        # These bindings trigger as soon as you enter the resize mode
+
+        # Pressing left will shrink the window’s width.
+        # Pressing right will grow the window’s width.
+        # Pressing up will shrink the window’s height.
+        # Pressing down will grow the window’s height.
+        bindsym h resize shrink width 2 px or 2 ppt
+        bindsym j resize grow height 2 px or 2 ppt
+        bindsym k resize shrink height 2 px or 2 ppt
+        bindsym l resize grow width 2 px or 2 ppt
+
+        # same bindings, but for the arrow keys
+        bindsym Left resize shrink width 2 px or 2 ppt
+        bindsym Down resize shrink height 2 px or 2 ppt
+        bindsym Up resize grow height 2 px or 2 ppt
+        bindsym Right resize grow width 2 px or 2 ppt
+
+        # back to normal: Enter or Escape
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+}
+bindsym $mod+r mode "resize"
+
+# Start i3bar to display a workspace bar (plus the system information i3status
+# finds out, if available)
+bar {
+    mode dock
+    position top
+    font -*-clean-medium-*-*-*-10-*-*-*-*-*-*-*
+    workspace_buttons yes
+	 status_command i3status 	#[HACK THIS] ~/.i3/i3bar.py
+    colors {
+        background #101010
+        statusline #999999
+        focused_workspace #101010 #4e5c63
+        active_workspace #4e5c63 #101010
+        inactive_workspace #5f5f5f #191919
+        urgent_workspace #2e3436 #cd989a
+    }
+}
+
+
+#class				border	backgr.	text
+client.focused			#4e5c63 #425062 #0f0f0f
+client.focused_inactive		#2e3436 #293730 #a9b8c1
+client.unfocused		#2e3436 #101618 #555555
+client.urgent			#cd989a #cd989a #2e3436
+client.background		#121212
