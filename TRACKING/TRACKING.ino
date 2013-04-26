@@ -1,4 +1,3 @@
-
 HardwareSerial Uart = HardwareSerial();
 //pins for reading IR sensors
 const int analogLeft = A0;
@@ -54,13 +53,6 @@ void loop(){
   if(grapmask==1){
     grappy();
   }
-  //TESTING
-  Serial.print("m1 = " );                       
-  Serial.print(m1Speed);      
-  Serial.print("   m2 = " );                       
-  Serial.print(m2Speed);      
-  Serial.print("    Difference: ");
-  Serial.println(sensorDiff);
 }
 
 void traceur(){
@@ -146,7 +138,9 @@ void traceur(){
     m1Speed = 50;
     m2Speed = 50;
     motor_set();
-  } 
+  }
+  
+  testing();
 }
 
 void grappy(){
@@ -181,3 +175,11 @@ void motor_set(){
   Uart.write(m2Speed);
 }
 
+void testing(){
+  Serial.print("m1 = " );                       
+  Serial.print(m1Speed);      
+  Serial.print("   m2 = " );                       
+  Serial.print(m2Speed);      
+  Serial.print("    Difference: ");
+  Serial.println(sensorDiff);
+}
