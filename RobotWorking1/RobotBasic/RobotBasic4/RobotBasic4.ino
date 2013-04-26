@@ -6,11 +6,9 @@ const unsigned char mLeftBrake   =  0xC7;
 const unsigned char mRightForward =  0xCE;
 const unsigned char mRightReverse =  0xCD;
 const unsigned char mRightBrake   =  0xCF;
-// pins for reading IR sensors
-const int analogLeft   =  A3;
-const int analogRight  =  A4;
-const int analogLeft2  =  A5;
-const int analogRight2 =  A6;
+// sensor pins
+int analogLeft;
+int analogRight;
 // grappling & tilt stuff
 const int tilt      =  5;
 const int grap      =  4;
@@ -51,9 +49,13 @@ void loop() {
   }
   if (grapMask){
     if (tiltMask){
+      analogLeft  = A3;
+      analogRight = A4;
       lineTracking();
     }
     if (!tiltMask){
+      analogLeft  = A5;
+      analogRight = A6;
       straightLine();
     }
   }
@@ -317,8 +319,6 @@ void grapple(){
     Serial1.write(40);
     Serial1.write(mRightReverse);   
     Serial1.write(40);
-    Serial.println("HERE IT COMES!");
-    // wait for it...
     delay(800);
     analogWrite(hookservo, 255);
     delay(1000);
