@@ -1,1 +1,0 @@
-/home/quorque/dwm/config.h
