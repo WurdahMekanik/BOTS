@@ -54,8 +54,8 @@ void loop() {
   // put your main code here, to run repeatedly:
  if(!started){
  forward(127);
- delay(10);
- star
+ delay(3);
+ started=1;
  }
  
  sensorLeft = analogRead(analogLeft);

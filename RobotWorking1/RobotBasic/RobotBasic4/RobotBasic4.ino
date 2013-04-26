@@ -12,10 +12,10 @@ const int analogRight  =  A4;
 const int analogLeft2  =  A5;
 const int analogRight2 =  A6;
 // grappling & tilt stuff
-const int tiltSwitch =  5;
-const int grap       =  4;
-const int hookservo  =  3;
-const char winch     =  0xF1;
+const int tilt      =  5;
+const int grap      =  4;
+const int hookservo =  3;
+const char winch    =  0xF1;
 // store sensor values
 int sensorLeft  =  0;
 int sensorRight =  0;
@@ -23,25 +23,42 @@ int sensorDiff  =  0;
 int speed       =  70;
 int m2Speed     =  127;
 // masks & counts
-int tilt     =  0;
-int shot     =  0;
-int count    =  0;
-int grapMask =  0;
+int count        =  0;
+boolean started  =  0;
+boolean tiltMask =  0;
+boolean shot     =  0;
+boolean grapMask =  0;
 
 // initialization
 void setup() {
   initial();
+  if (digitalRead(tilt)){
+    tiltMask = 1;
+  }
+  if (!digitalRead(tilt)){
+    tiltMask = 0;
+  }
 }
 
 // loopy
 void loop() {
+  if(!started){
+    forward(127);
+    delay(3);
+    started = 1;
+  }
   if (digitalRead(grap) == 1) {
-    grapMask=1;
+    grapMask = 1;
   }
-  if(grapmask==0){
-    lineTracking();
+  if (grapMask){
+    if (tiltMask){
+      lineTracking();
+    }
+    if (!tiltMask){
+      straightLine();
+    }
   }
-  if(grapmask==1){
+  if (!grapMask){
     grapple();
   }
 }
@@ -274,10 +291,11 @@ void lineTracking(){
 }
  
 void straightLine(){
+  
 }
 
 void grapple(){
-    while(shot != 1){
+  if (!shot){
     Serial1.write(m1Reverse);
     Serial1.write(40);
     Serial1.write(m2Reverse);   
