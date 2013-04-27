@@ -216,19 +216,11 @@ void lineTracking(){
    if((sensorLeft + sensorRight) > white){
      forward(55);
      delay(10);
-     count++;
-     //sensorLeft = analogRead(analogLeft);
-     //sensorRight = analogRead(analogRight);  
+     count++;  
    }  
    
    sensorLeft = analogRead(analogLeft1);
    sensorRight = analogRead(analogRight1);
-   /*if((sensorLeft + sensorRight) < 500){
-     forward(80);
-     delay(20);
-     sensorLeft = analogRead(analogLeft);
-     sensorRight = analogRead(analogRight);
-   }*/
       
    if((sensorLeft + sensorRight) < blackblack){
      if(sensorLeft > sensorRight){
@@ -266,16 +258,12 @@ void lineTracking(){
    if(sensorLeft < black){
         rotateRight(60);
         delay(20);
-        //sensorLeft = analogRead(analogLeft);
-        //sensorRight = analogRead(analogRight);
         count = 0;
         if(sensorLeft < black){
           forward(60);
           delay(20);
           rotateRight(60);
           delay(20);
-          //sensorLeft = analogRead(analogLeft);
-          //sensorRight = analogRead(analogRight);
           count = 0;
         }
    }
@@ -284,16 +272,12 @@ void lineTracking(){
    if(sensorRight < black){
      rotateLeft(60);
      delay(20);
-     //sensorLeft = analogRead(analogLeft);
-     //sensorRight = analogRead(analogRight);
      count = 0;
      if(sensorRight < black){
         forward(80);
         delay(20);
         rotateLeft(60);
         delay(20);
-        //sensorLeft = analogRead(analogLeft);
-        //sensorRight = analogRead(analogRight);
         count = 0;
      }
    }
@@ -335,22 +319,12 @@ void straightLineFast(){
    if((sensorLeft + sensorRight) > white0){
      forward(127);
      delay(5);
-     count++;
-     //sensorLeft = analogRead(analogLeft);
-     //sensorRight = analogRead(analogRight);  
+     count++; 
    }  
    
    sensorLeft = analogRead(analogLeft);
    sensorRight = analogRead(analogRight);
-   /*if((sensorLeft + sensorRight) < 500){
-     forward(80);
-     delay(20);
-     sensorLeft = analogRead(analogLeft);
-     sensorRight = analogRead(analogRight);
-   }*/
-   
-   
-   
+
    if((sensorLeft + sensorRight) < blackblack0){
      if(sensorLeft > sensorRight){
           forward(80);
@@ -386,16 +360,12 @@ void straightLineFast(){
    if(sensorLeft < black0){
         brakemRight(rotateSpeed);
         delay(20);
-        //sensorLeft = analogRead(analogLeft);
-        //sensorRight = analogRead(analogRight);
         count = 0;
         if(sensorLeft < black0){
           forward(60);
           delay(20);
         rotateRight(rotateSpeed);
         delay(20);
-        //sensorLeft = analogRead(analogLeft);
-        //sensorRight = analogRead(analogRight);
         count = 0;
       }
    }
@@ -404,16 +374,12 @@ void straightLineFast(){
    if(sensorRight < black0){
         brakemLeft(rotateSpeed);
         delay(20);
-        //sensorLeft = analogRead(analogLeft);
-        //sensorRight = analogRead(analogRight);
         count = 0;
         if(sensorRight < black0){
           forward(80);
           delay(20);
           rotateLeft(rotateSpeed);
           delay(20);
-         //sensorLeft = analogRead(analogLeft);
-         //sensorRight = analogRead(analogRight);
          count = 0;
        }
    
