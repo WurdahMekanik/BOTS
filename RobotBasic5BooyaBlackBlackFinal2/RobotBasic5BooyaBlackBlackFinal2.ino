@@ -7,10 +7,10 @@ const unsigned char mRightForward =  0xCE;
 const unsigned char mRightReverse =  0xCD;
 const unsigned char mRightBrake   =  0xCF;
 // sensor pins
-int analogLeft = A1;
-int analogRight = A2;
-int analogLeft1 = A3;
-int analogRight1 =A4;
+int analogLeft   = A1;
+int analogRight  = A2;
+int analogLeft1  = A3;
+int analogRight1 = A4;
 // grappling & tilt stuff
 const int tilt      =  5;
 const int grap      =  4;
@@ -28,7 +28,6 @@ boolean tiltMask =  false;
 boolean shot     =  false;
 boolean grapMask =  false;
 
-
 //used for default straightLineFollow
 int black = 100;
 int white = 400;
@@ -38,9 +37,7 @@ int blackblack = 200;
 int white0 = 1000;
 int black0 = 200;
 int blackblack0 = 399;
-
 int rotateSpeed = 60;
-
 int led = 7;
 
 // initialization
@@ -52,12 +49,6 @@ void setup() {
 void loop() {
   if(!started){
     tiltMask = digitalRead(tilt);
-    if (tiltMask){
-      digitalWrite(led, HIGH);
-    }
-    if (!tiltMask){
-      digitalWrite(led, LOW);
-    }
     forward(127);
     delay(3);
     started = true;
@@ -68,7 +59,7 @@ void loop() {
   if (tiltMask){
     lineTracking();
   }
-  else {
+  else if (!tiltMask){
     if(!grapMask){
     straightLineFast();
     }
@@ -218,12 +209,6 @@ void initial(){
   digitalWrite(13, HIGH);
 }
 
-// request Signature from Trex
-// should return TREX and firmware version number 
-unsigned char helloTrex(){
-  Serial1.write(0x81);
-}
-
 void lineTracking(){
  sensorLeft = analogRead(analogLeft1);
  sensorRight = analogRead(analogRight1);
@@ -314,34 +299,6 @@ void lineTracking(){
    }
 }
  
-void straightLine(){
-  sensorLeft = analogRead(analogLeft);
-  sensorRight = analogRead(analogRight);
-  
-  sensorDiff = sensorLeft - sensorRight;
-  if (sensorDiff > 120){
-    Serial1.write(mLeftForward);
-    Serial1.write(127);
-    Serial1.write(mRightForward);
-    Serial1.write(100);
-  }
-  sensorLeft = analogRead(analogLeft);
-  sensorRight = analogRead(analogRight);
-  
-  if (sensorDiff < -120){
-    Serial1.write(mLeftForward);
-    Serial1.write(100);
-    Serial1.write(mRightForward);
-    Serial1.write(127);
-  }
-  else {
-    Serial1.write(mLeftForward);
-    Serial1.write(127);
-    Serial1.write(mRightForward);
-    Serial1.write(127);
-  }
-}
-
 void grapple(){
   if (!shot){
     Serial1.write(mLeftReverse);
