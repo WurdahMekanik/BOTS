@@ -53,11 +53,11 @@ void loop() {
   if(!started){
     tiltMask = digitalRead(tilt);
     if (tiltMask){
-    //digitalWrite(led, HIGH);
-  }
+      digitalWrite(led, HIGH);
+    }
     if (!tiltMask){
-    //digitalWrite(led, LOW);
-  }
+      digitalWrite(led, LOW);
+    }
     forward(127);
     delay(3);
     started = true;
@@ -68,13 +68,14 @@ void loop() {
   if (tiltMask){
     lineTracking();
   }
-  else{
-    if(!grapMask)
+  else {
+    if(!grapMask){
     straightLineFast();
-  }
+    }
     if (grapMask){
       grapple();
     }
+  }
   
   Serial.print("s1 = " );                       
   Serial.print(sensorLeft);      
@@ -293,8 +294,8 @@ void lineTracking(){
           count = 0;
         }
    }
-   sensorLeft = analogRead(analogLeft);
-   sensorRight = analogRead(analogRight);
+   sensorLeft = analogRead(analogLeft1);
+   sensorRight = analogRead(analogRight1);
    if(sensorRight < black){
      rotateLeft(60);
      delay(20);
