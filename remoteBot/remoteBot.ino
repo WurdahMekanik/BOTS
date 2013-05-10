@@ -19,15 +19,17 @@ void setup(){
   delay(5);
   Serial1.begin(19200);
   delay(5);
+  /* next command supposedly needed for Arduino Leonardo,
+      but code seems to work without it. */
   //while(!Serial);
 }
 
 void loop(){
   dSpeed = map(analogRead(speedPot),0,1023,-120,120);
   turn = map(analogRead(turnPot),0,1023,-127,127);
-  
   setVelocity();
   
+  /* TESTING
   Serial.print("Right Speed: ");
   Serial.println(rightSpeed);
   Serial.print("Left Speed: ");
@@ -35,12 +37,14 @@ void loop(){
   Serial.print("Turn: ");
   Serial.println(turn);
   delay(100);
+  */
 }
 
 /*************************/
 /***** FUNCTIONS *****/
 /*************************/
-
+// different algorithims needed to take care 
+// of forward and reverse turns.
 void turning(){
   if (dSpeed > 0){
     if (turn >= 0){
@@ -74,9 +78,7 @@ void setLeft(int leftSpeed){
     Serial1.write(leftReverse);
     Serial1.write(leftSpeed);
   }
-  delay(5);
 }
-
 // Right motor control
 void setRight(int rightSpeed){
   if(rightSpeed >= 0){
@@ -88,9 +90,8 @@ void setRight(int rightSpeed){
     Serial1.write(rightReverse);
     Serial1.write(rightSpeed);
   }
-  delay(5);
 }
-
+//Bring it all together
 void setVelocity(){
   turning();
   delay(5);
