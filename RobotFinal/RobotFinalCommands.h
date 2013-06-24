@@ -2,7 +2,6 @@
 controller with Teensy 3.0*/
 #ifndef RobotFinalCommands_h
 #define RobotFinalCommands_h
-
 #include <Arduino.h>
 
 /***********************************/
@@ -42,47 +41,86 @@ boolean grapMask =  0;
 /************ FUNCTIONS ************/
 /***********************************/
 
+/*** INIT ***/
+// starts up both hardware serial and
+// software serial communication
+void initial(){
+   analogReadAveraging(5);
+   pinMode(grap, INPUT);
+   pinMode(hookservo, OUTPUT);
+   Serial.begin(19200);
+   delay(5);
+   Serial1.begin(19200);
+   delay(5);
+   pinMode(13, OUTPUT);
+   digitalWrite(13, HIGH);
+}
+// request Signature from TRex
+// should return TRex and firmware version number 
+unsigned char helloTRex(){
+   Serial1.write(0x81);
+}
+
+/*** MOTOR CONTROL ***/
 // both motors set to forward at full 127 speed
 void forward(int speed){
+<<<<<<< HEAD
   Serial1.write(leftForward);
   Serial1.write(speed);
   Serial1.write(rightForward);
   Serial1.write(speed);
+=======
+   Serial1.write(leftForward);
+   Serial1.write(speed);
+   Serial1.write(rightForward);
+   Serial1.write(speed);
+>>>>>>> b2d3d4cf54392a16c47e3f4632af8994ed4fefe4
 }
-
 // both motors set to forward at full 127 speed
 void reverse(int speed){
+<<<<<<< HEAD
   Serial1.write(leftReverse);
   Serial1.write(speed);
   Serial1.write(rightReverse);
   Serial1.write(speed);
+=======
+   Serial1.write(leftReverse);
+   Serial1.write(speed);
+   Serial1.write(rightReverse);
+   Serial1.write(speed);
+>>>>>>> b2d3d4cf54392a16c47e3f4632af8994ed4fefe4
 }
-
 // both motors set to forward at full 127 speed
 void brakeLow(int speed){
-  Serial1.write(leftBrake);
-  Serial1.write(speed);
-  Serial1.write(rightBrake);
-  Serial1.write(speed);
+   Serial1.write(leftBrake);
+   Serial1.write(speed);
 }
-
 // both motors set to forward at full 127 speed
 void brakeLeft(int speed){
+<<<<<<< HEAD
   Serial1.write(leftBrake);
   Serial1.write(speed);
+=======
+   Serial1.write(leftBrake);
+   Serial1.write(speed);
+>>>>>>> b2d3d4cf54392a16c47e3f4632af8994ed4fefe4
 }
-
 // both motors set to forward at full 127 speed
 void brakeRight(int speed){
+<<<<<<< HEAD
   Serial1.write(rightBrake);
   Serial1.write(speed);
+=======
+   Serial1.write(rightBrake);
+   Serial1.write(speed);
+>>>>>>> b2d3d4cf54392a16c47e3f4632af8994ed4fefe4
 }
-
 // motor2 set to speed forward or reverse
 // input -127 to 127 dSpeed, direction/speed
 // negative numbers are reverse speed
 // positive are forward speed
 void setLeft(int dSpeed){
+<<<<<<< HEAD
   if(dSpeed >= 0){
     Serial1.write(leftForward);
     Serial1.write(dSpeed);
@@ -92,13 +130,24 @@ void setLeft(int dSpeed){
     Serial1.write(leftReverse);
     Serial1.write(dSpeed);
   }
+=======
+   if(dSpeed >= 0){
+      Serial1.write(leftForward);
+      Serial1.write(dSpeed);
+   }
+   if(dSpeed < 0){
+      dSpeed = abs(dSpeed);
+      Serial1.write(leftReverse);
+      Serial1.write(dSpeed);
+   }
+>>>>>>> b2d3d4cf54392a16c47e3f4632af8994ed4fefe4
 }
-
 // motor2 set to speed forward or reverse
 // input -127 to 127 dSpeed, direction/speed
 // negative numbers are reverse speed
 // positive are forward speed
 void setRight(int dSpeed){
+<<<<<<< HEAD
   if(dSpeed >= 0){
     Serial1.write(rightForward);
     Serial1.write(dSpeed);
@@ -108,27 +157,46 @@ void setRight(int dSpeed){
     Serial1.write(rightReverse);
     Serial1.write(dSpeed);
   }
+=======
+   if(dSpeed >= 0){
+      Serial1.write(rightForward);
+      Serial1.write(dSpeed);
+   }
+   if(dSpeed < 0){
+      dSpeed = abs(dSpeed);
+      Serial1.write(rightReverse);
+      Serial1.write(dSpeed);
+   }
+>>>>>>> b2d3d4cf54392a16c47e3f4632af8994ed4fefe4
 }
-
 // motor1 and motor2 set to speed forward or reverse
 // input -127 to 127 dSpeed, direction/speed
 // negative numbers are reverse speed
 // positive are forward speed
 void setLeftRight(int dSpeedLeft, int dSpeedRight){
+<<<<<<< HEAD
   setLeft(dSpeedLeft);
   setRight(dSpeedRight);
+=======
+   setLeft(dSpeedLeft);
+   setRight(dSpeedRight);
+>>>>>>> b2d3d4cf54392a16c47e3f4632af8994ed4fefe4
 }
- 
 // motor2 set to reverse and motor1 forward at speed
 // input 0-127
 void rotateRight(int speed){
+<<<<<<< HEAD
   setLeft(speed);
   setRight(0 - speed);
+=======
+   setLeft(speed);
+   setRight(0 - speed);
+>>>>>>> b2d3d4cf54392a16c47e3f4632af8994ed4fefe4
 }
-
 // motor2 set to reverse and motor1 forward at speed
 // input 0-127
 void rotateLeft(int speed){
+<<<<<<< HEAD
   setRight(speed);
   setLeft(0 - speed);
 }
@@ -151,9 +219,15 @@ void initial(){
 // should return TRex and firmware version number 
 unsigned char helloTRex(){
   Serial1.write(0x81);
+=======
+   setRight(speed);
+   setLeft(0 - speed);
+>>>>>>> b2d3d4cf54392a16c47e3f4632af8994ed4fefe4
 }
 
+/*** LINE TRACKING ***/
 void lineTracking(){
+<<<<<<< HEAD
 // put your main code here, to run repeatedly:
   sensorLeft = analogRead(analogLeft);
   sensorRight = analogRead(analogRight);
@@ -225,52 +299,137 @@ void lineTracking(){
       count = 0;
     }
   }
+=======
+    // put your main code here, to run repeatedly:
+   sensorLeft = analogRead(analogLeft);
+   sensorRight = analogRead(analogRight);
+   if((sensorLeft + sensorRight) > 1700){
+     forward(55);
+     delay(10);
+     count++;
+     //sensorLeft = analogRead(analogLeft);
+     //sensorRight = analogRead(analogRight);  
+   }  
+   sensorLeft = analogRead(analogLeft);
+   sensorRight = analogRead(analogRight);
+   /*if((sensorLeft + sensorRight) < 500){
+     forward(80);
+     delay(20);
+     sensorLeft = analogRead(analogLeft);
+     sensorRight = analogRead(analogRight);
+   }*/ 
+   if((sensorLeft + sensorRight) < 399){
+      if(sensorLeft > sensorRight){
+         forward(80);
+         delay(20);
+         rotateLeft(100);
+         delay(20);
+         count = 0;
+      } 
+      if((sensorLeft + sensorRight) < 399){
+         forward(80);
+         delay(20);
+         rotateLeft(100);
+         delay(20);
+      } 
+      if(sensorLeft < sensorRight){
+         forward(80);
+         delay(20);
+         rotateRight(100);
+         delay(20);
+      }
+      if((sensorLeft + sensorRight) < 399){
+         forward(80);
+         delay(20);
+         rotateRight(100);
+         delay(20);
+      }
+      count = 0;
+   }
+   sensorLeft = analogRead(analogLeft);
+   sensorRight = analogRead(analogRight);
+   if(sensorLeft < 200){
+      rotateRight(60);
+      delay(20);
+      //sensorLeft = analogRead(analogLeft);
+      //sensorRight = analogRead(analogRight);
+      count = 0;
+      if(sensorLeft < 200){
+         forward(60);
+         delay(20);
+         rotateRight(60);
+         delay(20);
+         //sensorLeft = analogRead(analogLeft);
+         //sensorRight = analogRead(analogRight);
+         count = 0;
+      }
+   }
+   sensorLeft = analogRead(analogLeft);
+   sensorRight = analogRead(analogRight);
+   if(sensorRight < 200){
+      rotateLeft(60);
+      delay(20);
+      //sensorLeft = analogRead(analogLeft);
+      //sensorRight = analogRead(analogRight);
+      count = 0;
+      if(sensorRight < 200){
+         forward(80);
+         delay(20);
+         rotateLeft(60);
+         delay(20);
+         //sensorLeft = analogRead(analogLeft);
+         //sensorRight = analogRead(analogRight);
+         count = 0;
+      }
+   }
+>>>>>>> b2d3d4cf54392a16c47e3f4632af8994ed4fefe4
 }
  
 void straightLine(){
-  sensorLeft = analogRead(analogLeft);
-  sensorRight = analogRead(analogRight);
-  sensorDiff = sensorLeft - sensorRight;
-  if (sensorDiff > 120){
-    Serial1.write(leftForward);
-    Serial1.write(127);
-    Serial1.write(rightForward);
-    Serial1.write(100);
-  }
-  if (sensorDiff < -120){
-    Serial1.write(leftForward);
-    Serial1.write(100);
-    Serial1.write(rightForward);
-    Serial1.write(127);
-  }
-  else {
-    Serial1.write(leftForward);
-    Serial1.write(127);
-    Serial1.write(rightForward);
-    Serial1.write(127);
-  }
+   sensorLeft = analogRead(analogLeft);
+   sensorRight = analogRead(analogRight);
+   sensorDiff = sensorLeft - sensorRight;
+   if (sensorDiff > 120){
+      Serial1.write(leftForward);
+      Serial1.write(127);
+      Serial1.write(rightForward);
+      Serial1.write(100);
+   }
+   if (sensorDiff < -120){
+      Serial1.write(leftForward);
+      Serial1.write(100);
+      Serial1.write(rightForward);
+      Serial1.write(127);
+   }
+   else {
+      Serial1.write(leftForward);
+      Serial1.write(127);
+      Serial1.write(rightForward);
+      Serial1.write(127);
+   }
 }
 
+/*** GRAPPLING ***/
 void grapple(){
-  if (!shot){
-    Serial1.write(leftReverse);
-    Serial1.write(40);
-    Serial1.write(rightReverse);   
-    Serial1.write(40);
-    delay(900);
-    analogWrite(hookservo, 255);
-    delay(500);
-    shot = 1;
-  }
-  analogWrite(hookservo, 0);
-  Serial1.write(winch);
-  Serial1.write(127);
-  // There will be Slack! (change the delay to let winch acquire Slack)
-  delay(5000);
-  Serial1.write(leftForward);
-  Serial1.write(40);
-  Serial1.write(rightForward);
-  Serial1.write(40);
+   if (!shot){
+      Serial1.write(leftReverse);
+      Serial1.write(40);
+      Serial1.write(rightReverse);   
+      Serial1.write(40);
+      delay(900);
+      analogWrite(hookservo, 255);
+      delay(500);
+      shot = 1;
+   }
+   analogWrite(hookservo, 0);
+   Serial1.write(winch);
+   Serial1.write(127);
+   // There will be Slack! (change the delay to let winch acquire Slack)
+   delay(5000);
+   Serial1.write(leftForward);
+   Serial1.write(40);
+   Serial1.write(rightForward);
+   Serial1.write(40);
 }
 
 #endif
