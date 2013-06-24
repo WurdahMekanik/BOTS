@@ -5,7 +5,6 @@ controller with Teensy 3.0*/
 
 #include <Arduino.h>
 
-
 /***********************************/
 /************ VARIABLES ************/
 /***********************************/
@@ -49,18 +48,10 @@ void forward(int speed){
   Serial1.write(speed);
   Serial1.write(rightForward);
   Serial1.write(speed);
-  Serial1.write(leftForward);
-  Serial1.write(speed);
-  Serial1.write(rightForward);
-  Serial1.write(speed);
 }
 
 // both motors set to forward at full 127 speed
 void reverse(int speed){
-  Serial1.write(leftReverse);
-  Serial1.write(speed);
-  Serial1.write(rightReverse);
-  Serial1.write(speed);
   Serial1.write(leftReverse);
   Serial1.write(speed);
   Serial1.write(rightReverse);
@@ -79,14 +70,10 @@ void brakeLow(int speed){
 void brakeLeft(int speed){
   Serial1.write(leftBrake);
   Serial1.write(speed);
-  Serial1.write(leftBrake);
-  Serial1.write(speed);
 }
 
 // both motors set to forward at full 127 speed
 void brakeRight(int speed){
-  Serial1.write(rightBrake);
-  Serial1.write(speed);
   Serial1.write(rightBrake);
   Serial1.write(speed);
 }
@@ -99,13 +86,9 @@ void setLeft(int dSpeed){
   if(dSpeed >= 0){
     Serial1.write(leftForward);
     Serial1.write(dSpeed);
-    Serial1.write(leftForward);
-    Serial1.write(dSpeed);
   }
   if(dSpeed < 0){
     dSpeed = abs(dSpeed);
-    Serial1.write(leftReverse);
-    Serial1.write(dSpeed);
     Serial1.write(leftReverse);
     Serial1.write(dSpeed);
   }
@@ -119,13 +102,9 @@ void setRight(int dSpeed){
   if(dSpeed >= 0){
     Serial1.write(rightForward);
     Serial1.write(dSpeed);
-    Serial1.write(rightForward);
-    Serial1.write(dSpeed);
   }
   if(dSpeed < 0){
     dSpeed = abs(dSpeed);
-    Serial1.write(rightReverse);
-    Serial1.write(dSpeed);
     Serial1.write(rightReverse);
     Serial1.write(dSpeed);
   }
@@ -138,8 +117,6 @@ void setRight(int dSpeed){
 void setLeftRight(int dSpeedLeft, int dSpeedRight){
   setLeft(dSpeedLeft);
   setRight(dSpeedRight);
-  setLeft(dSpeedLeft);
-  setRight(dSpeedRight);
 }
  
 // motor2 set to reverse and motor1 forward at speed
@@ -147,15 +124,11 @@ void setLeftRight(int dSpeedLeft, int dSpeedRight){
 void rotateRight(int speed){
   setLeft(speed);
   setRight(0 - speed);
-  setLeft(speed);
-  setRight(0 - speed);
 }
 
 // motor2 set to reverse and motor1 forward at speed
 // input 0-127
 void rotateLeft(int speed){
-  setRight(speed);
-  setLeft(0 - speed);
   setRight(speed);
   setLeft(0 - speed);
 }
@@ -181,93 +154,77 @@ unsigned char helloTRex(){
 }
 
 void lineTracking(){
-    // put your main code here, to run repeatedly:
- sensorLeft = analogRead(analogLeft);
- sensorRight = analogRead(analogRight);
+// put your main code here, to run repeatedly:
+  sensorLeft = analogRead(analogLeft);
+  sensorRight = analogRead(analogRight);
  
-   if((sensorLeft + sensorRight) > 1700){
-     forward(55);
-     delay(10);
-     count++;
-     //sensorLeft = analogRead(analogLeft);
-     //sensorRight = analogRead(analogRight);  
-   }  
+    if((sensorLeft + sensorRight) > 1700){
+      forward(55);
+      delay(10);
+      count++;
+    }  
    
-   sensorLeft = analogRead(analogLeft);
-   sensorRight = analogRead(analogRight);
-   /*if((sensorLeft + sensorRight) < 500){
-     forward(80);
-     delay(20);
-     sensorLeft = analogRead(analogLeft);
-     sensorRight = analogRead(analogRight);
-   }*/
+  sensorLeft = analogRead(analogLeft);
+  sensorRight = analogRead(analogRight);
       
-   if((sensorLeft + sensorRight) < 399){
-     if(sensorLeft > sensorRight){
-       forward(80);
+    if((sensorLeft + sensorRight) < 399){
+      if(sensorLeft > sensorRight){
+        forward(80);
+        delay(20);
+        rotateLeft(100);
+        delay(20);
+        count = 0;
+      } 
+      if((sensorLeft + sensorRight) < 399){
+        forward(80);
+        delay(20);
+        rotateLeft(100);
+        delay(20);
+      } 
+      if(sensorLeft < sensorRight){
+        forward(80);
+        delay(20);
+        rotateRight(100);
+        delay(20);
+      }
+      if((sensorLeft + sensorRight) < 399){
+        forward(80);
+        delay(20);
+        rotateRight(100);
+        delay(20);
+      }
+      count = 0;
+    }
+   
+  sensorLeft = analogRead(analogLeft);
+  sensorRight = analogRead(analogRight);
+       
+  if(sensorLeft < 200){
+     rotateRight(60);
+     delay(20);
+     count = 0;
+     if(sensorLeft < 200){
+       forward(60);
        delay(20);
-       rotateLeft(100);
+       rotateRight(60);
        delay(20);
        count = 0;
-     } 
-     if((sensorLeft + sensorRight) < 399){
-       forward(80);
-       delay(20);
-       rotateLeft(100);
-       delay(20);
-     } 
-     if(sensorLeft < sensorRight){
-       forward(80);
-       delay(20);
-       rotateRight(100);
-       delay(20);
      }
-     if((sensorLeft + sensorRight) < 399){
-       forward(80);
-       delay(20);
-       rotateRight(100);
-       delay(20);
-     }
-     count = 0;
-   }
-   
-   sensorLeft = analogRead(analogLeft);
-   sensorRight = analogRead(analogRight);
-       
-   if(sensorLeft < 200){
-        rotateRight(60);
-        delay(20);
-        //sensorLeft = analogRead(analogLeft);
-        //sensorRight = analogRead(analogRight);
-        count = 0;
-        if(sensorLeft < 200){
-          forward(60);
-          delay(20);
-          rotateRight(60);
-          delay(20);
-          //sensorLeft = analogRead(analogLeft);
-          //sensorRight = analogRead(analogRight);
-          count = 0;
-        }
-   }
-   sensorLeft = analogRead(analogLeft);
-   sensorRight = analogRead(analogRight);
-   if(sensorRight < 200){
-     rotateLeft(60);
-     delay(20);
-     //sensorLeft = analogRead(analogLeft);
-     //sensorRight = analogRead(analogRight);
-     count = 0;
-     if(sensorRight < 200){
-     forward(80);
-     delay(20);
-     rotateLeft(60);
-     delay(20);
-     //sensorLeft = analogRead(analogLeft);
-     //sensorRight = analogRead(analogRight);
-     count = 0;
-     }
-   }
+  }
+  sensorLeft = analogRead(analogLeft);
+  sensorRight = analogRead(analogRight);
+  if(sensorRight < 200){
+    rotateLeft(60);
+    delay(20);
+    count = 0;
+    if(sensorRight < 200){
+      forward(80);
+      delay(20);
+      rotateLeft(60);
+      delay(20);
+      count = 0;
+    }
+  }
 }
  
 void straightLine(){

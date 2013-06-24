@@ -11,7 +11,7 @@ void setup() {
   }
 }
 
-// loopy
+// main program
 void loop() {
   if(!started){
     forward(127);
